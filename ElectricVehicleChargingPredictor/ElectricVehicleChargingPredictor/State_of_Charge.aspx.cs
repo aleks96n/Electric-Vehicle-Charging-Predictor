@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ElectricVehicleChargingPredictor.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -11,6 +12,15 @@ namespace ElectricVehicleChargingPredictor
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+            var vsm = new VehicleServiceManager();
+            var result = new SimpleResult();
+
+            var locations = new List<LocationModel>();
+            var socs = new List<SOCModel>();
+            result = vsm.Predict_SOC(ref socs, "3");
+
+
+
 
         }
     }

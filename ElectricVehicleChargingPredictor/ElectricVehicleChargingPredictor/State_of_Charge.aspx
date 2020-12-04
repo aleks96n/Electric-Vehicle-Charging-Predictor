@@ -166,24 +166,21 @@
                     }
                 },
                 scales: {
-                    x: {
-                        type: 'time',
-                        time: {
-                            parser: timeFormat,
-                            // round: 'day'
-                            tooltipFormat: 'll HH:mm'
+                    xAxes: [{
+                        scaleLabel: {
+                            display: true,
+                            labelString: 'Date Time'
+                        }
+                    }],
+                    yAxes: [{
+                        scaleLabel: {
+                            display: true,
+                            labelString: 'State of Charge'
                         },
-                        scaleLabel: {
-                            display: true,
-                            labelString: 'Date'
+                        ticks: {
+                            min:0
                         }
-                    },
-                    y: {
-                        scaleLabel: {
-                            display: true,
-                            labelString: 'value'
-                        }
-                    }
+                    }]
                 },
             }
         };
