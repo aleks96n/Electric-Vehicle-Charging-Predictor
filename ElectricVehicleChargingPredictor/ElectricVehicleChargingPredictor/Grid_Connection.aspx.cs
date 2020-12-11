@@ -8,7 +8,7 @@ using System.Web.UI.WebControls;
 
 namespace ElectricVehicleChargingPredictor
 {
-    public partial class State_of_Charge : Page
+    public partial class Grid_Connection : Page
     {
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -32,7 +32,7 @@ namespace ElectricVehicleChargingPredictor
 
             }
 
-            
+
         }
 
         protected void cmdModel_1_SelectedIndexChanged(object sender, EventArgs e)
@@ -56,7 +56,7 @@ namespace ElectricVehicleChargingPredictor
             {
                 divVehicleID_1.Visible = false;
             }
-            
+
         }
 
         protected void btnSubmit_1_Click(object sender, EventArgs e)
@@ -81,7 +81,7 @@ namespace ElectricVehicleChargingPredictor
                 TableHeaderRow headerRow = new TableHeaderRow();
                 headerRow.Cells.Add(new TableHeaderCell { Text = "Day", HorizontalAlign = HorizontalAlign.Center });
                 headerRow.Cells.Add(new TableHeaderCell { Text = "Time", HorizontalAlign = HorizontalAlign.Center });
-                headerRow.Cells.Add(new TableHeaderCell { Text = "State of Charge", HorizontalAlign = HorizontalAlign.Center });
+                headerRow.Cells.Add(new TableHeaderCell { Text = "Connected", HorizontalAlign = HorizontalAlign.Center });
 
                 tbl_SOC_2.Rows.Add(headerRow);
 
@@ -93,7 +93,7 @@ namespace ElectricVehicleChargingPredictor
                     hdn_data_2.Value += "," + soc.soc.ToString();
 
                     TableRow row = new TableRow();
-                    row.Cells.Add(new TableCell { Text = DateTime.Now.Day.ToString()});
+                    row.Cells.Add(new TableCell { Text = DateTime.Now.Day.ToString() });
                     row.Cells.Add(new TableCell { Text = time });
                     row.Cells.Add(new TableCell { Text = soc.soc.ToString() });
 
@@ -101,7 +101,7 @@ namespace ElectricVehicleChargingPredictor
                 }
 
                 hdn_xlabels_2.Value = "[" + hdn_xlabels_2.Value.Substring(1) + "]";
-                hdn_data_2.Value = "[" + hdn_data_2.Value.Substring(1) + "]" ;
+                hdn_data_2.Value = "[" + hdn_data_2.Value.Substring(1) + "]";
 
             }
             else

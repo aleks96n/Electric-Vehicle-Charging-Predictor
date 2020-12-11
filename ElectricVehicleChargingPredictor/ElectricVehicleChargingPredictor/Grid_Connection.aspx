@@ -1,4 +1,4 @@
-﻿<%@ Page Title="State of Charge Predictor" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="State_of_Charge.aspx.cs" Inherits="ElectricVehicleChargingPredictor.State_of_Charge" %>
+﻿<%@ Page Title="Grid Connection Predictor" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Grid_Connection.aspx.cs" Inherits="ElectricVehicleChargingPredictor.Grid_Connection" %>
 
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server">
     <script src="https://cdn.jsdelivr.net/npm/moment@2.24.0"></script>
@@ -23,9 +23,10 @@
         </div>
     </div>
     <div class="row">
-        <div class="form-group col-xs-12 col-sm-12 col-lg-12">
+        <div class="form-group col-xs-12 col-sm-12 col-lg-4">
             <asp:Button ID="btnSubmit_1" runat="server" class="btn btn-primary" OnClick="btnSubmit_1_Click" Text="Predict" />
         </div>
+
     </div>
 
     <asp:Panel runat="server" ID="pnl_2" Visible="false">
@@ -75,7 +76,7 @@
                     <asp:TableHeaderRow>
                         <asp:TableCell>Day</asp:TableCell>
                         <asp:TableCell>Time</asp:TableCell>
-                        <asp:TableCell>State of Charge</asp:TableCell>
+                        <asp:TableCell>Connected</asp:TableCell>
                     </asp:TableHeaderRow>
                 </asp:Table>
             </div>
@@ -132,7 +133,7 @@
                         yAxes: [{
                             scaleLabel: {
                                 display: true,
-                                labelString: 'State of Charge'
+                                labelString: 'Connected'
                             },
                             ticks: {
                                 min: 0

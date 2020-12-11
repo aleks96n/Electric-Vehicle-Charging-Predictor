@@ -145,8 +145,8 @@ C:\Users\handy89\OneDrive - Tartu Ülikool\Github\Aleks\ElectricVehicleChargingP
 C:\Users\handy89\OneDrive - Tartu Ülikool\Github\Aleks\ElectricVehicleChargingPredictor\ElectricVehicleChargingPredictor\bin\Antlr3.Runtime.pdb
 C:\Users\handy89\OneDrive - Tartu Ülikool\Github\Aleks\ElectricVehicleChargingPredictor\ElectricVehicleChargingPredictor\bin\Microsoft.AspNet.FriendlyUrls.xml
 C:\Users\handy89\OneDrive - Tartu Ülikool\Github\Aleks\ElectricVehicleChargingPredictor\ElectricVehicleChargingPredictor\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml
-C:\Users\handy89\OneDrive - Tartu Ülikool\Github\Aleks\ElectricVehicleChargingPredictor\ElectricVehicleChargingPredictor\obj\Debug\ElectricVehicleChargingPredictor.csprojAssemblyReference.cache
 C:\Users\handy89\OneDrive - Tartu Ülikool\Github\Aleks\ElectricVehicleChargingPredictor\ElectricVehicleChargingPredictor\obj\Debug\ElectricVehicleChargingPredictor.csproj.CoreCompileInputs.cache
 C:\Users\handy89\OneDrive - Tartu Ülikool\Github\Aleks\ElectricVehicleChargingPredictor\ElectricVehicleChargingPredictor\obj\Debug\ElectricVehicleChargingPredictor.csproj.CopyComplete
 C:\Users\handy89\OneDrive - Tartu Ülikool\Github\Aleks\ElectricVehicleChargingPredictor\ElectricVehicleChargingPredictor\obj\Debug\ElectricVehicleChargingPredictor.dll
 C:\Users\handy89\OneDrive - Tartu Ülikool\Github\Aleks\ElectricVehicleChargingPredictor\ElectricVehicleChargingPredictor\obj\Debug\ElectricVehicleChargingPredictor.pdb
+C:\Users\handy89\OneDrive - Tartu Ülikool\Github\Aleks\ElectricVehicleChargingPredictor\ElectricVehicleChargingPredictor\obj\Debug\ElectricVehicleChargingPredictor.csprojAssemblyReference.cache

@@ -11,7 +11,7 @@ namespace ElectricVehicleChargingPredictor
 {
 
 
-    public partial class State_of_Charge
+    public partial class Grid_Connection
     {
 
         /// <summary>

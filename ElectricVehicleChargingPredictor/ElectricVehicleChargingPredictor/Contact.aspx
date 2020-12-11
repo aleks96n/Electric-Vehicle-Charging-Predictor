@@ -2,16 +2,11 @@
 
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server">
     <h2><%: Title %>.</h2>
-    <h3>Your contact page.</h3>
+    <h3>GROUP P 12.</h3>
     <address>
-        One Microsoft Way<br />
-        Redmond, WA 98052-6399<br />
-        <abbr title="Phone">P:</abbr>
-        425.555.0100
-    </address>
-
-    <address>
-        <strong>Support:</strong>   <a href="mailto:Support@example.com">Support@example.com</a><br />
-        <strong>Marketing:</strong> <a href="mailto:Marketing@example.com">Marketing@example.com</a>
+        <strong>Aleksandra Leesment:</strong>   <a href="mailto:aleksandra.leesment@ut.ee">aleksandra.leesment@ut.ee</a><br />
+        <strong>Aleksander Nikolajev:</strong> <a href="mailto:aleksnik1996@gmail.com">aleksnik1996@gmail.com</a><br />
+        <strong>Handy Kurniawan:</strong> <a href="mailto:handy.kurniawan@ut.ee">handy.kurniawan@ut.ee</a><br />
+        <strong>Silver Maala</strong> <a href="mailto:silver.maala@tudeng.ut.ee">silver.maala@tudeng.ut.ee</a><br />
     </address>
 </asp:Content>
