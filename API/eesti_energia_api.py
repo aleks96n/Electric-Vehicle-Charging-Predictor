@@ -110,6 +110,20 @@ class SOC(Resource):
 
         return data, 200            
 
+class GridConnection(Resource):
+    def get(self):
+        query_parameters = request.args
+    
+        ev_id = query_parameters.get('ev_id')
+
+        work_df = Works.get_df(self, query_parameters);
+        
+        soc_predictions = work_df[(work_df["ev_id"] == int(ev_id)) & (work_df["days"] == 1)][["ev_id","time","soc"]]
+
+        data = "{d:" + soc_predictions.to_json(orient='records') + "}"  # convert dataframe to json
+
+
+        return data, 200    
 
 api.add_resource(Models, '/Models')
 api.add_resource(SOC, '/SOC')

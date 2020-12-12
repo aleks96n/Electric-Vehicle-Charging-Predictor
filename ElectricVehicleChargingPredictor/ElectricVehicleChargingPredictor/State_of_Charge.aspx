@@ -32,6 +32,8 @@
         <asp:HiddenField runat="server" ID="hdn_xlabels_2" />
         <asp:HiddenField runat="server" ID="hdn_data_2" />
         <asp:HiddenField runat="server" ID="hdn_legend_2" />
+        <asp:HiddenField runat="server" ID="hdn_used_2" />
+        <asp:HiddenField runat="server" ID="hdn_charged_2" />
 
         <div class="row">
             <hr />
@@ -42,7 +44,7 @@
                 <div class="card-body">
                     <h4 class="card-title">Total used energy</h4>
                     <p class="card-text">
-                        <h1>30</h1>
+                        <h1><% = hdn_used_2.Value %></h1>
                     </p>
                 </div>
             </div>
@@ -50,7 +52,7 @@
                 <div class="card-body">
                     <h4 class="card-title">Total charged energy</h4>
                     <p class="card-text">
-                        <h1>40</h1>
+                        <h1><% = hdn_charged_2.Value %></h1>
                     </p>
                 </div>
             </div>

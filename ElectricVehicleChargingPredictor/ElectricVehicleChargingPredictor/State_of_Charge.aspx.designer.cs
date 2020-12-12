@@ -87,6 +87,24 @@ namespace ElectricVehicleChargingPredictor
         protected global::System.Web.UI.WebControls.HiddenField hdn_legend_2;
 
         /// <summary>
+        /// hdn_used_2 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hdn_used_2;
+
+        /// <summary>
+        /// hdn_charged_2 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hdn_charged_2;
+
+        /// <summary>
         /// tbl_SOC_2 control.
         /// </summary>
         /// <remarks>

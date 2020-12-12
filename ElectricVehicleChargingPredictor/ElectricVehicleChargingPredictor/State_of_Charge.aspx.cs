@@ -85,6 +85,8 @@ namespace ElectricVehicleChargingPredictor
 
                 tbl_SOC_2.Rows.Add(headerRow);
 
+                float prevSOC = 0, currSOC = 0, chargedSOC = 0, usedSOC = 0;
+
                 foreach (var soc in socs)
                 {
                     string time = soc.time.ToString() == "24" ? "00" : soc.time.ToString().PadLeft(2, '0');
@@ -98,10 +100,29 @@ namespace ElectricVehicleChargingPredictor
                     row.Cells.Add(new TableCell { Text = soc.soc.ToString() });
 
                     tbl_SOC_2.Rows.Add(row);
+
+                    currSOC = soc.soc;
+
+                    if (currSOC > 0 && prevSOC > 0)
+                    {
+                        if (currSOC > prevSOC)
+                        {
+                            chargedSOC += currSOC - prevSOC;
+                        }
+                        else
+                        {
+                            usedSOC += prevSOC - currSOC;
+                        }
+                    }
+
+                    prevSOC = currSOC;
+
                 }
 
                 hdn_xlabels_2.Value = "[" + hdn_xlabels_2.Value.Substring(1) + "]";
                 hdn_data_2.Value = "[" + hdn_data_2.Value.Substring(1) + "]" ;
+                hdn_used_2.Value = usedSOC.ToString();
+                hdn_charged_2.Value = chargedSOC.ToString();
 
             }
             else
