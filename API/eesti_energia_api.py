@@ -60,6 +60,18 @@ class CommonFunction():
     
         return final_x_test_data
     
+    def make_data_grid_connection(ev_id, soc, distance_traveled):
+        
+        data = []
+        for i in range(24):
+            data.append([ev_id, i, soc[i], distance_traveled[i]])
+
+        ds = pd.DataFrame(data, columns = ['ev_id', 'time', 'soc' ,'distance_traveled'])
+        
+        print(ds)
+        
+        return ds
+    
     def load_model(json_file_name, weight_file_name):
         # load json and create model
         json_file = open(json_file_name, 'r')
@@ -207,9 +219,6 @@ class SOC(Resource):
     def get(self):
         query_parameters = request.args
     
-        #print("============== MASUK =============")
-        #print(tf.__version__)
-
         ev_id = query_parameters.get('ev_id')
 
         work_df = Works.get_df(self, query_parameters);
@@ -218,13 +227,8 @@ class SOC(Resource):
 
         loaded_model = CommonFunction.load_model("soc_predictor_model.json", "soc_predictor_model.h5")
         
-        #json_file_name = "soc_predictor_model.json";
-        #weight_file_name = "soc_predictor_model.h5";
-        
         ds = CommonFunction.make_dataset(24, soc_history);
-        
-        print(ds)
-        
+
         res = loaded_model.predict(ds);
 
         idx = res.shape[0]-2;
@@ -244,9 +248,6 @@ class DrivingBehaviour(Resource):
     
         loaded_model = CommonFunction.load_model("rnn_distance_model.json", "rnn_distance_model.h5")
         
-        #json_file_name = "soc_predictor_model.json";
-        #weight_file_name = "soc_predictor_model.h5";
-        
         ds = CommonFunction.make_data_distance(ev_id, 5, 25, train_work_df, val_work_df);
         predictions = loaded_model.predict(ds);
 
@@ -265,14 +266,37 @@ class GridConnection(Resource):
     
         ev_id = query_parameters.get('ev_id')
 
+        # Predict SOC
         work_df = Works.get_df(self, query_parameters);
-        
-        soc_predictions = work_df[(work_df["ev_id"] == int(ev_id)) & (work_df["days"] == 1)][["ev_id","time","soc"]]
+        soc_history = work_df[(work_df["ev_id"] == int(ev_id)) ][["ev_id", "model_id","time", "connected_val","soc"]]
+        loaded_model = CommonFunction.load_model("soc_predictor_model.json", "soc_predictor_model.h5")        
+        ds = CommonFunction.make_dataset(24, soc_history);
+        res = loaded_model.predict(ds);
+        idx = res.shape[0]-2;
+        soc = res[idx]
 
-        data = "{d:" + soc_predictions.to_json(orient='records') + "}"  # convert dataframe to json
+        # Predict Distance Traveled
+        train_work_df, val_work_df = Works.get_train_test_df(self, query_parameters);
+        loaded_model = CommonFunction.load_model("rnn_distance_model.json", "rnn_distance_model.h5")
+        ds = CommonFunction.make_data_distance(ev_id, 5, 25, train_work_df, val_work_df);
+        predictions = loaded_model.predict(ds);
+        nsamples, nx, ny = predictions.shape
+        d2 = predictions.reshape((nsamples,nx*ny))
+        res = sc.inverse_transform(d2)
+
+        distance_traveled = res.flatten().tolist()
 
 
-        return data, 200    
+        ds = CommonFunction.make_data_grid_connection(ev_id, soc, distance_traveled);
+
+        loaded_model = CommonFunction.load_model_pickle("voting_model2.sav");
+
+        res = loaded_model.predict(ds)
+        print(res)
+        #data = "{d:" + soc_predictions.to_json(orient='records') + "}"  # convert dataframe to json
+
+
+        return res, 200    
 
 api.add_resource(Models, '/Models')
 api.add_resource(SOC, '/SOC')
