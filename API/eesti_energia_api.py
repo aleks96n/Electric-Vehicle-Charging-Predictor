@@ -24,23 +24,29 @@ class CommonFunction():
             batch_size=32,)
         return ds
     
-    def make_data_distance(ev_id, time, days, train_work_df, val_work_df):
+    def make_data_distance(ev_id, time, train_work_df):
         #example time = 15
         data = []
         counter = time
+
         for i in range(24):
-            if(counter == 24):
+            if(counter > 24):
                 counter = 0
-            data.append([ev_id, counter, days, np.random.randint(0,80)])
+                
+            helper = train_work_df[(train_work_df["ev_id"] == int(ev_id)) & 
+                                   (train_work_df["days"] == 24) & 
+                                   (train_work_df["time"] == counter)]["distance_traveled"]
+            print(counter)
+            data.append([int(ev_id), counter, helper.values[0]])
             counter+=1
 
-        ds = pd.DataFrame(data, columns = ['ev_id', 'time', 'days' ,'distance_traveled'])
+        ds = pd.DataFrame(data, columns = ['ev_id', 'time','distance_traveled'])
     
-        test_data = val_work_df[['days', 'time', 'distance_traveled', 'ev_id']]
+        test_data = ds
         test_data = test_data.iloc[:, 1].values
      
-        unscaled_training_data = train_work_df[['days', 'time', 'distance_traveled', 'ev_id']]
-        unscaled_test_data = val_work_df[['days', 'time', 'distance_traveled', 'ev_id']]
+        unscaled_training_data = train_work_df[['ev_id', 'time', 'distance_traveled']]
+        unscaled_test_data = ds
      
         all_data = pd.concat((unscaled_training_data['distance_traveled'], unscaled_test_data['distance_traveled']), axis = 0)
         x_test_data = all_data[len(all_data) - len(test_data) - 40:].values
@@ -64,11 +70,9 @@ class CommonFunction():
         
         data = []
         for i in range(24):
-            data.append([ev_id, i, soc[i], distance_traveled[i]])
+            data.append([int(ev_id), i, float(soc[i]), float(distance_traveled[i])])
 
         ds = pd.DataFrame(data, columns = ['ev_id', 'time', 'soc' ,'distance_traveled'])
-        
-        print(ds)
         
         return ds
     
@@ -194,7 +198,7 @@ class Works(Resource):
         
         merged_inner = pd.merge(left=clean_work_df, right=model_df, left_on='model_id', right_on='model_id')
         merged_inner["soc_diff"] = abs(merged_inner["soc_diff_charged"] +  merged_inner["soc_diff_used"])
-        merged_inner["distance_traveled"] = abs(merged_inner["soc_diff_used"]) / merged_inner["efficiency"]
+        merged_inner["distance_traveled"] = abs(merged_inner["soc_diff_used"] / merged_inner["efficiency"])
         merged_inner["connected_val"] = np.where(merged_inner["connected"], 1, 0) 
         merged_inner["location_val"] = np.where(merged_inner["location_type"] == "home", 0, 1)
         
@@ -204,14 +208,14 @@ class Works(Resource):
         
         merged_inner = Works.get_clean_df(self, args);
         tmp_df = merged_inner[merged_inner["ev_id"] == 0];
-        train_work_df = tmp_df[: int(np.round(len(tmp_df) * 0.75))];
-        val_work_df = tmp_df[int(np.round(len(tmp_df) * 0.75)) :];
+        train_work_df = tmp_df[: int(np.round(len(tmp_df) * 0.80))];
+        val_work_df = tmp_df[int(np.round(len(tmp_df) * 0.80)) :];
 
         for i in range(1, 100):
             tmp_df = merged_inner[merged_inner["ev_id"] == i]
 
-        train_work_df = pd.concat([train_work_df, tmp_df[: int(np.round(len(tmp_df) * 0.75))]])
-        val_work_df = pd.concat([val_work_df, tmp_df[int(np.round(len(tmp_df) * 0.75)) :]])
+            train_work_df = pd.concat([train_work_df, tmp_df[: int(np.round(len(tmp_df) * 0.80))]])
+            val_work_df = pd.concat([val_work_df, tmp_df[int(np.round(len(tmp_df) * 0.80)) :]])
     
         return train_work_df, val_work_df    
     
@@ -246,9 +250,9 @@ class DrivingBehaviour(Resource):
 
         train_work_df, val_work_df = Works.get_train_test_df(self, query_parameters);
     
-        loaded_model = CommonFunction.load_model("rnn_distance_model.json", "rnn_distance_model.h5")
+        loaded_model = CommonFunction.load_model("rnn_distance_model_2.json", "rnn_distance_model_2.h5")
         
-        ds = CommonFunction.make_data_distance(ev_id, 5, 25, train_work_df, val_work_df);
+        ds = CommonFunction.make_data_distance(ev_id, 1, train_work_df);
         predictions = loaded_model.predict(ds);
 
         nsamples, nx, ny = predictions.shape
@@ -277,8 +281,8 @@ class GridConnection(Resource):
 
         # Predict Distance Traveled
         train_work_df, val_work_df = Works.get_train_test_df(self, query_parameters);
-        loaded_model = CommonFunction.load_model("rnn_distance_model.json", "rnn_distance_model.h5")
-        ds = CommonFunction.make_data_distance(ev_id, 5, 25, train_work_df, val_work_df);
+        loaded_model = CommonFunction.load_model("rnn_distance_model_2.json", "rnn_distance_model_2.h5")
+        ds = CommonFunction.make_data_distance(ev_id, 1, train_work_df);
         predictions = loaded_model.predict(ds);
         nsamples, nx, ny = predictions.shape
         d2 = predictions.reshape((nsamples,nx*ny))
@@ -286,17 +290,17 @@ class GridConnection(Resource):
 
         distance_traveled = res.flatten().tolist()
 
-
+        
         ds = CommonFunction.make_data_grid_connection(ev_id, soc, distance_traveled);
-
+        
         loaded_model = CommonFunction.load_model_pickle("voting_model2.sav");
-
-        res = loaded_model.predict(ds)
-        print(res)
+        
+        res = loaded_model.predict(ds[['ev_id', 'time', 'soc', 'distance_traveled']])
+        
         #data = "{d:" + soc_predictions.to_json(orient='records') + "}"  # convert dataframe to json
 
 
-        return res, 200    
+        return json.dumps(res.tolist()), 200    
 
 api.add_resource(Models, '/Models')
 api.add_resource(SOC, '/SOC')
