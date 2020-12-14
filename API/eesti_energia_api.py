@@ -6,6 +6,7 @@ import numpy as np
 from tensorflow.keras.models import model_from_json
 import tensorflow as tf
 from sklearn import preprocessing
+import pickle
 
 sc = preprocessing.MinMaxScaler()
 app = Flask(__name__)
@@ -23,7 +24,7 @@ class CommonFunction():
             batch_size=32,)
         return ds
     
-    def make_data_distance(ev_id, time, days, train_work_df):
+    def make_data_distance(ev_id, time, days, train_work_df, val_work_df):
         #example time = 15
         data = []
         counter = time
@@ -35,11 +36,11 @@ class CommonFunction():
 
         ds = pd.DataFrame(data, columns = ['ev_id', 'time', 'days' ,'distance_traveled'])
     
-        test_data = ds
+        test_data = val_work_df[['days', 'time', 'distance_traveled', 'ev_id']]
         test_data = test_data.iloc[:, 1].values
      
         unscaled_training_data = train_work_df[['days', 'time', 'distance_traveled', 'ev_id']]
-        unscaled_test_data = ds
+        unscaled_test_data = val_work_df[['days', 'time', 'distance_traveled', 'ev_id']]
      
         all_data = pd.concat((unscaled_training_data['distance_traveled'], unscaled_test_data['distance_traveled']), axis = 0)
         x_test_data = all_data[len(all_data) - len(test_data) - 40:].values
@@ -68,6 +69,11 @@ class CommonFunction():
         # load weights into new model
         loaded_model.load_weights(weight_file_name)
 
+        return loaded_model
+    
+    def load_model_pickle(filename):
+        loaded_model = pickle.load(open(filename, 'rb'))
+        
         return loaded_model
     
 class Models(Resource):
@@ -216,6 +222,9 @@ class SOC(Resource):
         #weight_file_name = "soc_predictor_model.h5";
         
         ds = CommonFunction.make_dataset(24, soc_history);
+        
+        print(ds)
+        
         res = loaded_model.predict(ds);
 
         idx = res.shape[0]-2;
@@ -238,7 +247,7 @@ class DrivingBehaviour(Resource):
         #json_file_name = "soc_predictor_model.json";
         #weight_file_name = "soc_predictor_model.h5";
         
-        ds = CommonFunction.make_data_distance(ev_id, 5, 25, train_work_df);
+        ds = CommonFunction.make_data_distance(ev_id, 5, 25, train_work_df, val_work_df);
         predictions = loaded_model.predict(ds);
 
         nsamples, nx, ny = predictions.shape

@@ -3,38 +3,37 @@
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server">
 
     <div class="jumbotron">
-        <h1>ASP.NET</h1>
-        <p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS, and JavaScript.</p>
-        <p><a href="http://www.asp.net" class="btn btn-primary btn-lg">Learn more &raquo;</a></p>
+        <h1>Eesti Energia</h1>
+        <p class="lead">Eesti Energia proposing the project for predicting the usage of the electric vehicle in Tartu.</p>
+        <p><a href="https://www.energia.ee/et/avaleht" class="btn btn-primary btn-lg">Learn more &raquo;</a></p>
     </div>
 
     <div class="row">
         <div class="col-md-4">
-            <h2>Getting started</h2>
+            <h2>Driving Behaviour Predictor</h2>
             <p>
-                ASP.NET Web Forms lets you build dynamic websites using a familiar drag-and-drop, event-driven model.
-            A design surface and hundreds of controls and components let you rapidly build sophisticated, powerful UI-driven sites with data access.
+                This one will predict about what is the driving behaviour from each of the user for the next 24 hour..
             </p>
             <p>
-                <a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301948">Learn more &raquo;</a>
-            </p>
-        </div>
-        <div class="col-md-4">
-            <h2>Get more libraries</h2>
-            <p>
-                NuGet is a free Visual Studio extension that makes it easy to add, remove, and update libraries and tools in Visual Studio projects.
-            </p>
-            <p>
-                <a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301949">Learn more &raquo;</a>
+                <a class="btn btn-default" runat="server" href="~/Driving_Behaviour">Learn more &raquo;</a>
             </p>
         </div>
         <div class="col-md-4">
-            <h2>Web Hosting</h2>
+            <h2>Grid Connection Predictor</h2>
             <p>
-                You can easily find a web hosting company that offers the right mix of features and price for your applications.
+                This one will predict the behaviour of the user when they will charge the car or just put it standing for the next 24 hour..
             </p>
             <p>
-                <a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301950">Learn more &raquo;</a>
+                <a class="btn btn-default" runat="server" href="~/Grid_Connection">Learn more &raquo;</a>
+            </p>
+        </div>
+        <div class="col-md-4">
+            <h2>State of Charge Predictor</h2>
+            <p>
+                This one will predict the state of charge of the electric vehicle for the next 24 hour.
+            </p>
+            <p>
+                <a class="btn btn-default" runat="server" href="~/State_of_Charge">Learn more &raquo;</a>
             </p>
         </div>
     </div>

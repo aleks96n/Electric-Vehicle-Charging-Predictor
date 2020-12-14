@@ -85,6 +85,10 @@ namespace ElectricVehicleChargingPredictor
 
                 foreach (var db in dbs)
                 {
+                    if (db.time > 24)
+                    {
+                        db.time = db.time % 24;
+                    }
                     string time = db.time.ToString() == "24" ? "00" : db.time.ToString().PadLeft(2, '0');
                     string s = DateTime.ParseExact(time + "0000", "HHmmss", c).ToString("hh tt", c);
                     hdn_xlabels_2.Value += ",\"" + s + "\"";
