@@ -25,6 +25,13 @@ namespace ElectricVehicleChargingPredictor.Models
         public float soc { get; set; }
     }
 
+    public class DrivingBehaviourModel
+    {
+        public int ev_id { get; set; }
+        public int time { get; set; }
+        public float soc { get; set; }
+    }
+
     public class VehicleModelModel
     {
         public int model_id { get; set; }

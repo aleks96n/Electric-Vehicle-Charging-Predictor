@@ -122,13 +122,14 @@ namespace ElectricVehicleChargingPredictor
             return result;
         }
 
+        #region Predictor
         public SimpleResult Predict_SOC(ref List<SOCModel> socs, string ev_id)
         {
             var result = new SimpleResult { Success = false };
 
             try
             {
-                var param = "?ev_id="+ ev_id;
+                var param = "?ev_id=" + ev_id;
 
                 //send request
                 var request = new RestRequest("SOC" + param, Method.GET)
@@ -143,31 +144,46 @@ namespace ElectricVehicleChargingPredictor
                 result = CommonResponseHandler(response);
                 if (!result.Success) return result;
 
-                var jsonResponse = JsonHelper.prepareJsonFromAPI(response.Content);
+                var soc_predictions = response.Content.Replace("[", "").Replace("]", "").Replace(" ", "").Replace("\"", "").Split(',').ToList();
+                var i = 1;
 
-                //process data
-                if (JsonHelper.IsValidJson(jsonResponse))
+                foreach (var pred in soc_predictions)
                 {
+                    var soc = new SOCModel();
+                    soc.ev_id = int.Parse(ev_id);
+                    soc.time = i;
+                    soc.soc = float.Parse(pred);
 
-                    JObject jsonObject = JObject.Parse(jsonResponse);
-                    if (jsonObject["d"] != null)
-                    {
-                        var jos = jsonObject["d"];
+                    socs.Add(soc);
 
-
-                        foreach (var jo in jos)
-                        {
-                            var soc = new SOCModel();
-                            soc.ev_id = int.Parse(jo["ev_id"].ToString().Trim());
-                            soc.time = int.Parse(jo["time"].ToString().Trim());
-                            soc.soc = float.Parse(jo["soc"].ToString().Trim());
-
-                            socs.Add(soc);
-                        }
-
-
-                    }
+                    i += 1;
                 }
+
+                //var jsonResponse = JsonHelper.prepareJsonFromAPI(response.Content);
+
+                ////process data
+                //if (JsonHelper.IsValidJson(jsonResponse))
+                //{
+
+                //    JObject jsonObject = JObject.Parse(jsonResponse);
+                //    if (jsonObject["d"] != null)
+                //    {
+                //        var jos = jsonObject["d"];
+
+
+                //        foreach (var jo in jos)
+                //        {
+                //            var soc = new SOCModel();
+                //            soc.ev_id = int.Parse(jo["ev_id"].ToString().Trim());
+                //            soc.time = int.Parse(jo["time"].ToString().Trim());
+                //            soc.soc = float.Parse(jo["soc"].ToString().Trim());
+
+                //            socs.Add(soc);
+                //        }
+
+
+                //    }
+                //}
 
                 result.Success = true;
             }
@@ -178,6 +194,53 @@ namespace ElectricVehicleChargingPredictor
 
             return result;
         }
+
+        public SimpleResult Predict_Driving_Behaviour(ref List<DrivingBehaviourModel> dbs, string ev_id)
+        {
+            var result = new SimpleResult { Success = false };
+
+            try
+            {
+                var param = "?ev_id=" + ev_id;
+
+                //send request
+                var request = new RestRequest("DrivingBehaviour" + param, Method.GET)
+                {
+                    RequestFormat = DataFormat.Json
+                };
+
+                //execute request
+                var response = NWGClient.Execute(request);
+
+                //handle response
+                result = CommonResponseHandler(response);
+                if (!result.Success) return result;
+
+                var soc_predictions = response.Content.Replace("[", "").Replace("]", "").Replace(" ", "").Replace("\"", "").Split(',').ToList();
+                var i = 1;
+
+                foreach (var pred in soc_predictions)
+                {
+                    var db = new DrivingBehaviourModel();
+                    db.ev_id = int.Parse(ev_id);
+                    db.time = i;
+                    db.soc = float.Parse(pred);
+
+                    dbs.Add(db);
+
+                    i += 1;
+                }
+                result.Success = true;
+            }
+            catch
+            {
+                throw;
+            }
+
+            return result;
+        }
+        #endregion
+
 
         public SimpleResult GetVehicleModels(ref List<VehicleModelModel> models)
         {

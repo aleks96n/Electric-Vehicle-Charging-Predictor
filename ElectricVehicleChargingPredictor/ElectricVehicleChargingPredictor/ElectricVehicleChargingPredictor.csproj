@@ -119,6 +119,7 @@
     <Content Include="Content\Chart.min.css" />
     <Content Include="Content\Site.css" />
     <Content Include="Default.aspx" />
+    <Content Include="Driving_Behaviour.aspx" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -193,6 +194,13 @@
     </Compile>
     <Compile Include="Default.aspx.designer.cs">
       <DependentUpon>Default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Driving_Behaviour.aspx.cs">
+      <DependentUpon>Driving_Behaviour.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Driving_Behaviour.aspx.designer.cs">
+      <DependentUpon>Driving_Behaviour.aspx</DependentUpon>
     </Compile>
     <Compile Include="DynamicJson.cs" />
     <Compile Include="Global.asax.cs">

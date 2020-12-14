@@ -8,7 +8,7 @@ using System.Web.UI.WebControls;
 
 namespace ElectricVehicleChargingPredictor
 {
-    public partial class State_of_Charge : Page
+    public partial class Driving_Behaviour : Page
     {
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -28,11 +28,7 @@ namespace ElectricVehicleChargingPredictor
                         cmdModel_1.Items.Add(new ListItem(model.model, model.model_id.ToString()));
                     }
                 }
-
-
             }
-
-            
         }
 
         protected void cmdModel_1_SelectedIndexChanged(object sender, EventArgs e)
@@ -56,19 +52,19 @@ namespace ElectricVehicleChargingPredictor
             {
                 divVehicleID_1.Visible = false;
             }
-            
+
         }
 
         protected void btnSubmit_1_Click(object sender, EventArgs e)
         {
 
             System.Globalization.CultureInfo c = System.Globalization.CultureInfo.InvariantCulture;
-            var socs = new List<SOCModel>();
+            var dbs = new List<DrivingBehaviourModel>();
 
             var vsm = new VehicleServiceManager();
-            vsm.Predict_SOC(ref socs, cmdVehicleID_1.SelectedValue.ToString());
+            vsm.Predict_Driving_Behaviour(ref dbs, cmdVehicleID_1.SelectedValue.ToString());
 
-            if (socs.Count > 0)
+            if (dbs.Count > 0)
             {
                 pnl_2.Visible = true;
                 hdn_xlabels_2.Value = "";
@@ -81,27 +77,27 @@ namespace ElectricVehicleChargingPredictor
                 TableHeaderRow headerRow = new TableHeaderRow();
                 //headerRow.Cells.Add(new TableHeaderCell { Text = "Day", HorizontalAlign = HorizontalAlign.Center });
                 headerRow.Cells.Add(new TableHeaderCell { Text = "Time", HorizontalAlign = HorizontalAlign.Center });
-                headerRow.Cells.Add(new TableHeaderCell { Text = "State of Charge", HorizontalAlign = HorizontalAlign.Center });
+                headerRow.Cells.Add(new TableHeaderCell { Text = "Distance Traveled", HorizontalAlign = HorizontalAlign.Center });
 
                 tbl_SOC_2.Rows.Add(headerRow);
 
                 float prevSOC = 0, currSOC = 0, chargedSOC = 0, usedSOC = 0;
 
-                foreach (var soc in socs)
+                foreach (var db in dbs)
                 {
-                    string time = soc.time.ToString() == "24" ? "00" : soc.time.ToString().PadLeft(2, '0');
+                    string time = db.time.ToString() == "24" ? "00" : db.time.ToString().PadLeft(2, '0');
                     string s = DateTime.ParseExact(time + "0000", "HHmmss", c).ToString("hh tt", c);
                     hdn_xlabels_2.Value += ",\"" + s + "\"";
-                    hdn_data_2.Value += "," + soc.soc.ToString();
+                    hdn_data_2.Value += "," + db.soc.ToString();
 
                     TableRow row = new TableRow();
                     //row.Cells.Add(new TableCell { Text = DateTime.Now.Day.ToString()});
                     row.Cells.Add(new TableCell { Text = time });
-                    row.Cells.Add(new TableCell { Text = soc.soc.ToString() });
+                    row.Cells.Add(new TableCell { Text = db.soc.ToString() });
 
                     tbl_SOC_2.Rows.Add(row);
 
-                    currSOC = soc.soc;
+                    currSOC = db.soc;
 
                     if (currSOC > 0 && prevSOC > 0)
                     {
@@ -120,7 +116,7 @@ namespace ElectricVehicleChargingPredictor
                 }
 
                 hdn_xlabels_2.Value = "[" + hdn_xlabels_2.Value.Substring(1) + "]";
-                hdn_data_2.Value = "[" + hdn_data_2.Value.Substring(1) + "]" ;
+                hdn_data_2.Value = "[" + hdn_data_2.Value.Substring(1) + "]";
                 hdn_used_2.Value = usedSOC.ToString();
                 hdn_charged_2.Value = chargedSOC.ToString();
 

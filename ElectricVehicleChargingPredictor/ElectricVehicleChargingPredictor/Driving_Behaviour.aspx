@@ -1,4 +1,4 @@
-﻿<%@ Page Title="State of Charge Predictor" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="State_of_Charge.aspx.cs" Inherits="ElectricVehicleChargingPredictor.State_of_Charge" %>
+﻿<%@ Page Title="Driving Behaviour Predictor" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Driving_Behaviour.aspx.cs" Inherits="ElectricVehicleChargingPredictor.Driving_Behaviour" %>
 
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server">
     <script src="https://cdn.jsdelivr.net/npm/moment@2.24.0"></script>
@@ -151,10 +151,5 @@
             };
         </script>
     </asp:Panel>
-
-
-
-
-
 
 </asp:Content>
