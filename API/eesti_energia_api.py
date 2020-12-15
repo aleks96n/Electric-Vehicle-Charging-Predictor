@@ -254,9 +254,9 @@ class DrivingBehaviour(Resource):
         ds = CommonFunction.make_data_distance(ev_id, 1, train_work_df);
         predictions = loaded_model.predict(ds);
 
-        nsamples, nx, ny = predictions.shape
-        d2 = predictions.reshape((nsamples,nx*ny))
-        res = sc.inverse_transform(d2)
+        #nsamples, nx, ny = predictions.shape
+        #d2 = predictions.reshape((nsamples,nx*ny))
+        res = sc.inverse_transform(predictions)
 
         #data = "{d:" + soc_predictions.to_json(orient='records') + "}"  # convert dataframe to json
 

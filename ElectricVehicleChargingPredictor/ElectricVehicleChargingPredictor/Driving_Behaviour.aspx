@@ -134,7 +134,7 @@
                         yAxes: [{
                             scaleLabel: {
                                 display: true,
-                                labelString: 'State of Charge'
+                                labelString: 'Distance Traveled'
                             },
                             ticks: {
                                 min: 0

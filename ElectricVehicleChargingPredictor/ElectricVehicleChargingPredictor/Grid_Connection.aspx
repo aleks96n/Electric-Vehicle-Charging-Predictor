@@ -127,7 +127,7 @@
                         xAxes: [{
                             scaleLabel: {
                                 display: true,
-                                labelString: 'ime'
+                                labelString: 'time'
                             }
                         }],
                         yAxes: [{
