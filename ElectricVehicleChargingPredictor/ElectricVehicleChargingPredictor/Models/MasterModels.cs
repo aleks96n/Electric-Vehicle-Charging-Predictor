@@ -29,7 +29,14 @@ namespace ElectricVehicleChargingPredictor.Models
     {
         public int ev_id { get; set; }
         public int time { get; set; }
-        public float soc { get; set; }
+        public float distance_traveled { get; set; }
+    }
+
+    public class GridConnectionModel
+    {
+        public int ev_id { get; set; }
+        public int time { get; set; }
+        public int connected { get; set; }
     }
 
     public class VehicleModelModel

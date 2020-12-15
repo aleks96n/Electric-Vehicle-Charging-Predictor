@@ -92,16 +92,16 @@ namespace ElectricVehicleChargingPredictor
                     string time = db.time.ToString() == "24" ? "00" : db.time.ToString().PadLeft(2, '0');
                     string s = DateTime.ParseExact(time + "0000", "HHmmss", c).ToString("hh tt", c);
                     hdn_xlabels_2.Value += ",\"" + s + "\"";
-                    hdn_data_2.Value += "," + db.soc.ToString();
+                    hdn_data_2.Value += "," + db.distance_traveled.ToString();
 
                     TableRow row = new TableRow();
                     //row.Cells.Add(new TableCell { Text = DateTime.Now.Day.ToString()});
                     row.Cells.Add(new TableCell { Text = time });
-                    row.Cells.Add(new TableCell { Text = db.soc.ToString() });
+                    row.Cells.Add(new TableCell { Text = db.distance_traveled.ToString() });
 
                     tbl_SOC_2.Rows.Add(row);
 
-                    currSOC = db.soc;
+                    currSOC = db.distance_traveled;
 
                     if (currSOC > 0 && prevSOC > 0)
                     {

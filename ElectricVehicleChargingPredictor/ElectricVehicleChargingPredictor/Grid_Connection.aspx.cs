@@ -63,12 +63,12 @@ namespace ElectricVehicleChargingPredictor
         {
 
             System.Globalization.CultureInfo c = System.Globalization.CultureInfo.InvariantCulture;
-            var socs = new List<SOCModel>();
+            var grids = new List<GridConnectionModel>();
 
             var vsm = new VehicleServiceManager();
-            vsm.Predict_SOC(ref socs, cmdVehicleID_1.SelectedValue.ToString());
+            vsm.Predict_Grid_Connection(ref grids, cmdVehicleID_1.SelectedValue.ToString());
 
-            if (socs.Count > 0)
+            if (grids.Count > 0)
             {
                 pnl_2.Visible = true;
                 hdn_xlabels_2.Value = "";
@@ -85,17 +85,17 @@ namespace ElectricVehicleChargingPredictor
 
                 tbl_SOC_2.Rows.Add(headerRow);
 
-                foreach (var soc in socs)
+                foreach (var grid in grids)
                 {
-                    string time = soc.time.ToString() == "24" ? "00" : soc.time.ToString().PadLeft(2, '0');
+                    string time = grid.time.ToString() == "24" ? "00" : grid.time.ToString().PadLeft(2, '0');
                     string s = DateTime.ParseExact(time + "0000", "HHmmss", c).ToString("hh tt", c);
                     hdn_xlabels_2.Value += ",\"" + s + "\"";
-                    hdn_data_2.Value += "," + soc.soc.ToString();
+                    hdn_data_2.Value += "," + grid.connected.ToString();
 
                     TableRow row = new TableRow();
                     row.Cells.Add(new TableCell { Text = DateTime.Now.Day.ToString() });
                     row.Cells.Add(new TableCell { Text = time });
-                    row.Cells.Add(new TableCell { Text = soc.soc.ToString() });
+                    row.Cells.Add(new TableCell { Text = grid.connected.ToString() });
 
                     tbl_SOC_2.Rows.Add(row);
                 }

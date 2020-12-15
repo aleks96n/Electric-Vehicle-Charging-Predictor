@@ -36,7 +36,6 @@ class CommonFunction():
             helper = train_work_df[(train_work_df["ev_id"] == int(ev_id)) & 
                                    (train_work_df["days"] == 24) & 
                                    (train_work_df["time"] == counter)]["distance_traveled"]
-            print(counter)
             data.append([int(ev_id), counter, helper.values[0]])
             counter+=1
 
