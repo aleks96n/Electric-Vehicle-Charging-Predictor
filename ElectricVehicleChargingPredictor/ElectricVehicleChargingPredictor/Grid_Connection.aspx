@@ -38,7 +38,7 @@
             <hr />
         </div>
 
-        <div class="row">
+<%--        <div class="row">
             <div class="card text-center col-xs-12 col-sm-6 col-md-6 col-lg-6">
                 <div class="card-body">
                     <h4 class="card-title">Total used energy</h4>
@@ -55,7 +55,7 @@
                     </p>
                 </div>
             </div>
-        </div>
+        </div>--%>
 
         <div class="row">
             &nbsp;
